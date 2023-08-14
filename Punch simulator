@@ -1,0 +1,82 @@
+-- UI --
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Punch Simulator", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+
+-- Variables
+getgenv().autoTap = true
+getgenv().autoHatch = true
+getgenv().SelectEgg = "Forest Egg"
+
+-- Functions 
+function autoHatch()
+  while getgenv().autoHatch == true do
+    game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("PlayerPressedKeyOnEgg"):FireServer(getgenv().SelectEgg)
+    wait()
+end
+end
+-- Tabs
+local FarmTab = Window:MakeTab({
+	Name = "AutoFarm",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local SettingsTab = Window:MakeTab({
+	Name = "Settings",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+-- Sections 
+local FarmSection = FarmTab:AddSection({
+	Name = "Fast Hatch"
+})
+
+local ScriptsSection = SettingsTab:AddSection({
+	Name = "Scripts"
+})
+
+local DebugSection = SettingsTab:AddSection({
+	Name = "Debug"
+})
+
+-- Buttons
+SettingsTab = ScriptsSection:AddButton({
+	Name = "Infinite Yield",
+	Callback = function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+      print("Executed Infinite Yield")
+  	end    
+})
+
+SettingsTab = DebugSection:AddButton({
+	Name = "Destroy Gui",
+	Callback = function()
+    OrionLib:Destroy()
+      print("Gui Destroyed")
+  	end    
+})
+
+-- Toggles
+FarmTab = FarmSection:AddToggle({
+	Name = "Auto Hatch",
+	Default = false,
+	Callback = function(Value)
+    getgenv().autoHatch = function(Value) 
+    end
+  end
+})
+
+-- Dropdowns
+FarmTab = FarmSection:AddDropdown({
+	Name = "Select Egg",
+	Default = "Forest Egg",
+	Options = {"Forest Egg", "Forest Egg 2", "Desert Egg"},
+	Callback = function(Value)
+		getgenv().SelectEgg = function(Value)
+    Print(getgenv().SelectEgg)
+    end
+  end
+})
+
+OrionLib:Init()
